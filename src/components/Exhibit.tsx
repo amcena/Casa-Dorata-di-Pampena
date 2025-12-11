@@ -19,7 +19,9 @@ const Exhibit: React.FC<ExhibitProps> = ({
     <div
       className="exhibit"
       style={{
-        transform: `translateZ(${zPosition}px)`,
+        transform: `translateY(${Math.abs(zPosition)}px) translateZ(50px)`,
+        top: '50%',
+        marginTop: '-200px',
       }}
       onClick={handleClick}
     >
