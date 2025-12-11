@@ -1,0 +1,51 @@
+@import './variables.scss';
+
+.hallway-container {
+  perspective: $perspective;
+  perspective-origin: 50% 50%;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: linear-gradient(to bottom, $ceiling-color 0%, $floor-color 50%, $floor-color 100%);
+}
+
+.hallway-scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease-out;
+  will-change: transform;
+}
+
+.wall {
+  position: absolute;
+  width: 600px;
+  height: 5000px;
+  transform-style: preserve-3d;
+
+  &--left {
+    background: linear-gradient(to right,
+      darken($wall-color, 5%) 0%,
+      $wall-color 50%,
+      darken($wall-color, 3%) 100%);
+    transform:
+      translateX(-$wall-distance)
+      rotateY(90deg);
+    transform-origin: right center;
+  }
+
+  &--right {
+    background: linear-gradient(to left,
+      darken($wall-color, 5%) 0%,
+      $wall-color 50%,
+      darken($wall-color, 3%) 100%);
+    transform:
+      translateX($wall-distance)
+      rotateY(-90deg);
+    transform-origin: left center;
+  }
+}
