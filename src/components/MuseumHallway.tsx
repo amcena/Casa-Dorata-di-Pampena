@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { exhibitsData } from '../data/exhibits';
+import { exhibitsData, treePositions } from '../data/exhibits';
 import Exhibit from './Exhibit';
+import Tree from './Tree';
 
 const HALLWAY_LENGTH = 4000;
 const SCROLL_MULTIPLIER = 2;
@@ -25,9 +26,6 @@ const MuseumHallway: React.FC = () => {
     };
   }, []);
 
-  const leftExhibits = exhibitsData.filter(exhibit => exhibit.side === 'left');
-  const rightExhibits = exhibitsData.filter(exhibit => exhibit.side === 'right');
-
   return (
     <div className="hallway-container">
       <div
@@ -36,15 +34,21 @@ const MuseumHallway: React.FC = () => {
           transform: `translateZ(${zPosition}px)`,
         }}
       >
+        {/* Stone path */}
+        <div className="floor" />
+        <div className="ceiling" />
+
+        {/* Left brick wall with posters */}
         <div className="wall wall--left">
-          {leftExhibits.map(exhibit => (
+          {exhibitsData.map(exhibit => (
             <Exhibit key={exhibit.id} {...exhibit} />
           ))}
         </div>
 
+        {/* Right grass area with trees */}
         <div className="wall wall--right">
-          {rightExhibits.map(exhibit => (
-            <Exhibit key={exhibit.id} {...exhibit} />
+          {treePositions.map(tree => (
+            <Tree key={tree.id} zPosition={tree.zPosition} />
           ))}
         </div>
       </div>

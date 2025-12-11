@@ -9,43 +9,161 @@
   position: fixed;
   top: 0;
   left: 0;
-  background: linear-gradient(to bottom, $ceiling-color 0%, $floor-color 50%, $floor-color 100%);
+  background: linear-gradient(to bottom,
+    lighten($sky-color, 10%) 0%,
+    $sky-color 50%,
+    $grass-color 62%,
+    darken($grass-color, 10%) 100%
+  );
 }
 
 .hallway-scene {
-  position: relative;
+  position: absolute;
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
   transition: transform 0.1s ease-out;
   will-change: transform;
+  left: 50%;
+  top: 50%;
 }
 
+// Stone path extending into distance
+.floor {
+  position: absolute;
+  width: 15000px;
+  height: 800px;
+  background:
+    // Stone cobbles pattern
+    radial-gradient(circle at 20% 30%, darken($path-color, 10%) 5%, transparent 5%),
+    radial-gradient(circle at 60% 70%, darken($path-color, 8%) 4%, transparent 4%),
+    radial-gradient(circle at 80% 20%, darken($path-color, 12%) 6%, transparent 6%),
+    radial-gradient(circle at 35% 80%, darken($path-color, 9%) 5%, transparent 5%),
+    // Base stone color with variations
+    repeating-linear-gradient(
+      90deg,
+      $path-color 0px,
+      lighten($path-color, 3%) 80px,
+      darken($path-color, 5%) 160px,
+      $path-color 240px
+    );
+  background-size: 200px 200px, 200px 200px, 200px 200px, 200px 200px, 100% 100%;
+  transform:
+    translateY(300px)
+    translateZ(500px)
+    rotateY(90deg)
+    rotateX(90deg)
+    translateX(-500px);
+  transform-origin: left top;
+  transform-style: preserve-3d;
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  backface-visibility: visible;
+}
+
+// Sky (no ceiling needed for outdoor scene)
+.ceiling {
+  display: none;
+}
+
+// Left brick wall with posters
 .wall {
   position: absolute;
-  width: 600px;
-  height: 5000px;
+  width: 15000px;
+  height: 600px;
   transform-style: preserve-3d;
+  z-index: 2;
 
   &--left {
-    background: linear-gradient(to right,
-      darken($wall-color, 5%) 0%,
-      $wall-color 50%,
-      darken($wall-color, 3%) 100%);
+    // Brick pattern
+    background-image:
+      // Mortar lines horizontal
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 30px,
+        darken($brick-wall-color, 20%) 30px,
+        darken($brick-wall-color, 20%) 32px
+      ),
+      // Mortar lines vertical (offset pattern)
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 80px,
+        darken($brick-wall-color, 20%) 80px,
+        darken($brick-wall-color, 20%) 82px
+      ),
+      // Brick color variations
+      linear-gradient(to bottom,
+        $brick-wall-color 0%,
+        lighten($brick-wall-color, 5%) 50%,
+        darken($brick-wall-color, 5%) 100%
+      );
     transform:
-      translateX(-$wall-distance)
+      translateX(-400px)
+      translateY(-200px)
+      translateZ(500px)
       rotateY(90deg);
-    transform-origin: right center;
+    transform-origin: left center;
+    box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.3);
   }
 
   &--right {
-    background: linear-gradient(to left,
-      darken($wall-color, 5%) 0%,
-      $wall-color 50%,
-      darken($wall-color, 3%) 100%);
+    // Grass area for trees
+    background: linear-gradient(to bottom,
+      $grass-color 0%,
+      lighten($grass-color, 5%) 50%,
+      darken($grass-color, 8%) 100%
+    );
     transform:
-      translateX($wall-distance)
+      translateX(400px)
+      translateY(-200px)
+      translateZ(500px)
       rotateY(-90deg);
-    transform-origin: left center;
+    transform-origin: right center;
+    opacity: 0.8;
+  }
+}
+
+// Tree styling
+.tree {
+  position: absolute;
+  width: 100px;
+  height: 250px;
+  transform-style: preserve-3d;
+  left: 20px;
+  top: 100px;
+
+  &__trunk {
+    position: absolute;
+    width: 25px;
+    height: 80px;
+    bottom: 0;
+    left: 50%;
+    margin-left: -12px;
+    background: linear-gradient(to right,
+      darken($tree-trunk, 15%) 0%,
+      $tree-trunk 50%,
+      darken($tree-trunk, 8%) 100%
+    );
+    border-radius: 4px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  &__canopy {
+    position: absolute;
+    width: 100px;
+    height: 160px;
+    bottom: 50px;
+    left: 0;
+    background: radial-gradient(circle at 50% 50%,
+      lighten($tree-leaves, 12%) 0%,
+      $tree-leaves 45%,
+      darken($tree-leaves, 15%) 100%
+    );
+    border-radius: 50%;
+    box-shadow:
+      inset 0 -15px 25px rgba(0, 0, 0, 0.4),
+      3px 3px 12px rgba(0, 0, 0, 0.3);
   }
 }
