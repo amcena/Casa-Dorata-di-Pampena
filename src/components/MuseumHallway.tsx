@@ -3,7 +3,7 @@ import { exhibitsData, treePositions } from '../data/exhibits';
 import Exhibit from './Exhibit';
 import Tree from './Tree';
 
-const HALLWAY_LENGTH = 4800;
+const HALLWAY_LENGTH = 2900;
 const SCROLL_MULTIPLIER = 2;
 
 const MuseumHallway: React.FC = () => {

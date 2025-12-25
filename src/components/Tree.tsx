@@ -7,7 +7,7 @@ const Tree: React.FC<TreeProps> = ({ zPosition }) => {
     <div
       className="tree"
       style={{
-        transform: `translateX(${Math.abs(zPosition)}px) translateZ(80px) rotateY(180deg)`,
+        transform: `translateX(-${Math.abs(zPosition)}px) translateZ(50px) rotateY(180deg)`,
       }}
     >
       <div className="tree__canopy" />

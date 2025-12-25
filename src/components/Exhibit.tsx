@@ -12,6 +12,13 @@ const Exhibit: React.FC<ExhibitProps> = ({
   link,
   companies,
   isFestivalStyle,
+  isBroadwayStyle,
+  isWelcomeStyle,
+  isTearOffStyle,
+  acts,
+  starring,
+  contactTabs,
+  category,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -41,15 +48,87 @@ const Exhibit: React.FC<ExhibitProps> = ({
   return (
     <>
       <div
-        className={`exhibit ${isFestivalStyle ? 'exhibit--festival' : ''}`}
+        className={`exhibit ${isFestivalStyle ? 'exhibit--festival' : ''} ${isBroadwayStyle ? 'exhibit--broadway' : ''} ${isWelcomeStyle ? 'exhibit--welcome' : ''} ${isTearOffStyle ? 'exhibit--tearoff' : ''}`}
         style={{
           transform: `translateX(${Math.abs(zPosition)}px) translateZ(50px)`,
-          top: '0px',
-          left: '0px',
+          top: '80px',
+          left: '60px',
         }}
         onClick={handleClick}
       >
-        {isFestivalStyle && companies ? (
+        {isWelcomeStyle ? (
+          <>
+            {imageUrl && (
+              <img
+                src={imageUrl}
+                alt={title}
+                className="exhibit__welcome-bg"
+              />
+            )}
+            <div className="exhibit__welcome-content">
+              <h2 className="exhibit__welcome-title">{title}</h2>
+              <p className="exhibit__welcome-description">{description}</p>
+              <div className="exhibit__welcome-cta">
+                <img
+                  src="/Casa-Dorata-di-Pampena/assets/icons/hand-tap.svg"
+                  alt=""
+                  className="exhibit__welcome-icon"
+                />
+                Click to explore
+              </div>
+              <div className="exhibit__welcome-scroll">
+                <img
+                  src="/Casa-Dorata-di-Pampena/assets/icons/chevron-down.svg"
+                  alt="Scroll down"
+                  className="exhibit__welcome-scroll-icon"
+                />
+              </div>
+            </div>
+          </>
+        ) : isBroadwayStyle && acts && starring ? (
+          <div className="exhibit__broadway-content">
+            <div className="exhibit__broadway-header">
+              <h2 className="exhibit__broadway-title">{title}</h2>
+              <p className="exhibit__broadway-subtitle">{description}</p>
+            </div>
+            <div className="exhibit__broadway-starring">
+              <div className="exhibit__broadway-starring-label">STARRING</div>
+              <div className="exhibit__broadway-roles">
+                {starring.join(' • ')}
+              </div>
+            </div>
+            <div className="exhibit__broadway-footer">
+              NOW PLAYING • CLICK FOR FULL PLAYBILL
+            </div>
+          </div>
+        ) : isTearOffStyle && contactTabs ? (
+          <div className="exhibit__tearoff-content">
+            <div className="exhibit__tearoff-header">
+              <div className="exhibit__tearoff-pin exhibit__tearoff-pin--tl" />
+              <div className="exhibit__tearoff-pin exhibit__tearoff-pin--tr" />
+              <h2 className="exhibit__tearoff-title">{title}</h2>
+              <p className="exhibit__tearoff-description">{description}</p>
+            </div>
+            <div className="exhibit__tearoff-tabs">
+              {contactTabs.map((tab, index) => (
+                <a
+                  key={index}
+                  href={tab.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="exhibit__tearoff-tab"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="exhibit__tearoff-tab-perforation" />
+                  <div className="exhibit__tearoff-tab-content">
+                    <div className="exhibit__tearoff-tab-icon">{tab.type === 'email' ? '✉' : tab.type === 'github' ? '⌘' : tab.type === 'instagram' ? '📷' : '💼'}</div>
+                    <div className="exhibit__tearoff-tab-label">{tab.label}</div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : isFestivalStyle && companies ? (
           <div className="exhibit__festival-content">
             <div className="exhibit__festival-header">
               <h2 className="exhibit__festival-title">{title}</h2>
@@ -92,12 +171,102 @@ const Exhibit: React.FC<ExhibitProps> = ({
 
       {isExpanded && createPortal(
         <div className="exhibit-modal" onClick={handleClose}>
-          <div className={`exhibit-modal__content ${isFestivalStyle ? 'exhibit-modal__content--festival' : ''}`} onClick={(e) => e.stopPropagation()}>
+          <div className={`exhibit-modal__content ${isFestivalStyle ? 'exhibit-modal__content--festival' : ''} ${isBroadwayStyle ? 'exhibit-modal__content--broadway' : ''} ${isTearOffStyle ? 'exhibit-modal__content--tearoff' : ''}`} onClick={(e) => e.stopPropagation()}>
             <button className="exhibit-modal__close" onClick={handleClose}>
-              ×
+              <img
+                src="/Casa-Dorata-di-Pampena/assets/icons/xmark-circle.svg"
+                alt="Close"
+                className="exhibit-modal__close-icon"
+              />
             </button>
 
-            {isFestivalStyle && companies ? (
+            {isTearOffStyle && contactTabs ? (
+              <div className="exhibit-modal__tearoff">
+                <div className="exhibit-modal__tearoff-content">
+                  <div className="exhibit-modal__tearoff-header">
+                    <div className="exhibit-modal__tearoff-pin exhibit-modal__tearoff-pin--tl" />
+                    <div className="exhibit-modal__tearoff-pin exhibit-modal__tearoff-pin--tr" />
+                    <h2 className="exhibit-modal__tearoff-title">{title}</h2>
+                    <p className="exhibit-modal__tearoff-description">{description}</p>
+                  </div>
+                  <div className="exhibit-modal__tearoff-tabs">
+                    {contactTabs.map((tab, index) => (
+                      <a
+                        key={index}
+                        href={tab.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="exhibit-modal__tearoff-tab"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="exhibit-modal__tearoff-tab-perforation" />
+                        <div className="exhibit-modal__tearoff-tab-content">
+                          <div className="exhibit-modal__tearoff-tab-icon">
+                            {tab.type === 'email' ? '✉' : tab.type === 'github' ? '⌘' : tab.type === 'instagram' ? '📷' : '💼'}
+                          </div>
+                          <div className="exhibit-modal__tearoff-tab-label">{tab.label}</div>
+                          <div className="exhibit-modal__tearoff-tab-type">{tab.type}</div>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : isBroadwayStyle && acts && starring ? (
+              <div className="exhibit-modal__broadway">
+                <div className="exhibit-modal__broadway-header">
+                  <h2 className="exhibit-modal__broadway-title">{title}</h2>
+                  <p className="exhibit-modal__broadway-subtitle">{description}</p>
+                  <div className="exhibit-modal__broadway-now-playing">
+                    ★ NOW PLAYING ★
+                  </div>
+                </div>
+
+                <div className="exhibit-modal__broadway-starring">
+                  <div className="exhibit-modal__broadway-starring-label">
+                    STARRING
+                  </div>
+                  <div className="exhibit-modal__broadway-roles">
+                    {starring.map((role) => (
+                      <div key={role} className="exhibit-modal__broadway-role">
+                        {role}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="exhibit-modal__broadway-acts">
+                  {acts.map((act) => (
+                    <div key={act.number} className="exhibit-modal__broadway-act">
+                      <div className="exhibit-modal__broadway-act-header">
+                        <div className="exhibit-modal__broadway-act-number">
+                          {act.number}
+                        </div>
+                        <h3 className="exhibit-modal__broadway-act-title">
+                          {act.title}
+                        </h3>
+                      </div>
+                      <ul className="exhibit-modal__broadway-scenes">
+                        {act.scenes.map((scene, index) => (
+                          <li key={index} className="exhibit-modal__broadway-scene">
+                            {scene}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="exhibit-modal__broadway-footer">
+                  <img
+                    src="/Casa-Dorata-di-Pampena/assets/icons/theater-masks.svg"
+                    alt=""
+                    className="exhibit-modal__broadway-icon"
+                  />
+                  An Original Production • Directed by Ambition • Produced by Passion
+                </div>
+              </div>
+            ) : isFestivalStyle && companies ? (
               <div className="exhibit-modal__festival">
                 <div className="exhibit-modal__festival-header">
                   <h2 className="exhibit-modal__title">{title}</h2>
@@ -124,7 +293,12 @@ const Exhibit: React.FC<ExhibitProps> = ({
                             className="company-card__link"
                             style={{ borderColor: company.accentColor }}
                           >
-                            Visit Website →
+                            Visit Website
+                            <img
+                              src="/Casa-Dorata-di-Pampena/assets/icons/arrow-external.svg"
+                              alt=""
+                              className="company-card__link-icon"
+                            />
                           </a>
                           {company.instagram && (
                             <a
@@ -134,6 +308,11 @@ const Exhibit: React.FC<ExhibitProps> = ({
                               className="company-card__link company-card__link--instagram"
                               style={{ borderColor: company.accentColor }}
                             >
+                              <img
+                                src="/Casa-Dorata-di-Pampena/assets/icons/camera.svg"
+                                alt=""
+                                className="company-card__link-icon"
+                              />
                               @{company.instagram}
                             </a>
                           )}
