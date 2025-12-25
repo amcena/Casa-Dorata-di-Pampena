@@ -18,7 +18,6 @@ const Exhibit: React.FC<ExhibitProps> = ({
   acts,
   starring,
   contactTabs,
-  category,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
